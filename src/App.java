@@ -1,0 +1,30 @@
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Stack;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        LogicaClasificacion logica = new LogicaClasificacion();
+        // Probar invertirCadena
+        String texto = "Hola Mundo";
+        String invertido = logica.invertirCadena(texto);
+        System.out.println("invertirCadena(\"" + texto + "\"): " + invertido);
+
+        // Probar validarSimbolos
+        String expresion = "{[()]}";
+        boolean balanceado = logica.validarSimbolos(expresion);
+        System.out.println("validarSimbolos(\"" + expresion + "\"): " + balanceado);
+
+        // Probar ordenarPila
+        Stack<Integer> pila = new Stack<>();
+        pila.push(3);
+        pila.push(1);
+        pila.push(4);
+        pila.push(2);
+        System.out.println("ordenarPila([3, 1, 4, 2]): " + logica.ordenarPila(pila));
+
+        // Probar clasificarPorParidad
+        LinkedList<Integer> original = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+        System.out.println("clasificarPorParidad([1, 2, 3, 4, 5, 6]): " + logica.clasificarPorParidad(original));
+    }
+}
