@@ -31,10 +31,11 @@ jobs:
       run: |
         mkdir -p resultados
         java -jar lib/junit-platform-console-standalone-1.7.0.jar \
-          --class-path bin \
-          --scan-class-path \
-          --details tree \
-          --reports-dir resultados
+            --class-path bin \
+            --scan-class-path \
+            --details tree \
+            --disable-ansi-colors \
+            | tee resultados/salida.txt
 
     - name: Leer nombre y correo del estudiante desde App.java
       id: estudiante
@@ -46,20 +47,20 @@ jobs:
     
     - name: Calcular nota y guardar en archivo
       run: |
-        PASADAS=$(grep -oP "✔ \K\d+" resultados/test-summary.txt | head -1)
-        FALLADAS=$(grep -oP "✘ \K\d+" resultados/test-summary.txt | head -1)
+        PASADAS=$(grep -c "✔" resultados/salida.txt || echo 0)
+        FALLADAS=$(grep -c "✘" resultados/salida.txt || echo 0)
         if [ -z "$PASADAS" ]; then PASADAS=0; fi
         if [ -z "$FALLADAS" ]; then FALLADAS=0; fi
         TOTAL=$((PASADAS + FALLADAS))
         if [ "$TOTAL" -eq 0 ]; then TOTAL=4; fi
         NOTA=$(echo "$PASADAS * 2.5" | bc)
 
-        USUARIO=$(echo "$correo" | cut -d '@' -f1 | tr '[:lower:]' )
+        USUARIO=$(echo "$correo" | cut -d '@' -f1)
         REPO=$(basename "$GITHUB_REPOSITORY")
         ARCHIVO="$USUARIO-$REPO.txt"
 
-        echo "👤 Estudiante: ${{ steps.estudiante.outputs.nombre }}" > "$ARCHIVO"
-        echo "✉️  Correo: ${{ steps.estudiante.outputs.correo }}" >> "$ARCHIVO"
+        echo "👤 Estudiante: $USUARIO ${{ steps.estudiante.outputs.nombre }}" > "$ARCHIVO"
+        echo "✉️ Correo: ${{ steps.estudiante.outputs.correo }}" >> "$ARCHIVO"
         echo "✅ $PASADAS de $TOTAL pruebas pasadas" >> "$ARCHIVO"
         echo "📊 Nota final: $NOTA / 10" >> "$ARCHIVO"
         
