@@ -1,4 +1,4 @@
-# Estructuras de Datos Lineales
+# Estructuras de Datos Lineales - Ejercicio Práctico
 
 ## Getting Started
 
@@ -9,6 +9,40 @@ Este repositorio se refiere a la segunda unidad de Estructuras de Datos, donde e
 ## Requisitos
 - Java JDK 11 o superior
 - Git 2.20 o superior
+
+
+## Identificación del Estudiante (Obligatorio)
+
+Antes de comenzar a programar o ejecutar el proyecto, **debes completar tu nombre y correo institucional en el archivo `student.env`** que se encuentra en la raíz del proyecto. Este archivo es necesario para validar tu identidad como autor del trabajo.
+
+### ¿Por qué es obligatorio?
+
+Este proyecto utiliza una verificación automática que valida que has ingresado tu información personal. Si no lo haces:
+
+- Al ejecutar el proyecto (`App.java`) verás este mensaje de error:
+```
+❌ Debes completar STUDENT_NAME y STUDENT_EMAIL en student.env
+```
+- No podrás enviar tu código (`push`) al repositorio si tienes activado el sistema de validación local.
+- Las pruebas automáticas en GitHub Actions también fallarán si no detectan tu nombre y correo.
+
+### ¿Qué debo hacer?
+
+1. Abre el archivo `student.env` que ya está creado en el proyecto.
+2. Rellena tus datos:
+
+```
+STUDENT_NAME=Tu Nombre Completo
+STUDENT_EMAIL=tu.correo@institucion.edu.ec
+```
+
+
+3. **No borres estas líneas ni cambies los nombres de las variables.**
+4. Guarda los cambios y vuelve a ejecutar el programa o hacer push.
+
+> 💡 Este mecanismo asegura la autoría del código y que cada estudiante reciba su evaluación automática de forma personalizada.
+
+---
 
 
 

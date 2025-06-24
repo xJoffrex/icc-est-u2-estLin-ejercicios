@@ -1,0 +1,65 @@
+name: Evaluación de Pruebas
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Ejecutar pruebas y calcular nota
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar repositorio
+      uses: actions/checkout@v3
+
+    - name: Instalar Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Compilar archivos
+      run: |
+        mkdir -p bin
+        javac -cp "lib/*" -d bin $(find src -name "*.java")
+
+    - name: Ejecutar pruebas
+      run: |
+        mkdir -p resultados
+        java -jar lib/junit-platform-console-standalone-1.7.0.jar \
+          --class-path bin \
+          --scan-class-path \
+          --details tree \
+          --reports-dir resultados
+
+    - name: Leer nombre y correo del estudiante desde App.java
+      id: estudiante
+      run: |
+        nombre=$(grep ESTUDIANTE_NOMBRE src/main/App.java | cut -d '"' -f2)
+        correo=$(grep ESTUDIANTE_CORREO src/main/App.java | cut -d '"' -f2)
+        echo "nombre=$nombre" >> $GITHUB_OUTPUT
+        echo "correo=$correo" >> $GITHUB_OUTPUT
+    
+    - name: Calcular nota y guardar en archivo
+      run: |
+        PASADAS=$(grep -oP "✔ \K\d+" resultados/test-summary.txt | head -1)
+        FALLADAS=$(grep -oP "✘ \K\d+" resultados/test-summary.txt | head -1)
+        if [ -z "$PASADAS" ]; then PASADAS=0; fi
+        if [ -z "$FALLADAS" ]; then FALLADAS=0; fi
+        TOTAL=$((PASADAS + FALLADAS))
+        if [ "$TOTAL" -eq 0 ]; then TOTAL=4; fi
+        NOTA=$(echo "$PASADAS * 2.5" | bc)
+        echo "👤 Estudiante: ${{ steps.estudiante.outputs.nombre }}" > nota.txt
+        echo "✉️  Correo: ${{ steps.estudiante.outputs.correo }}" >> nota.txt
+        echo "✅ $PASADAS de $TOTAL pruebas pasadas" >> nota.txt
+        echo "📊 Nota final: $NOTA / 10" >> nota.txt
+        cat nota.txt
+
+    - name: Subir archivo de resultado como artefacto
+      uses: actions/upload-artifact@v3
+      with:
+        name: nota
+        path: nota.txt
