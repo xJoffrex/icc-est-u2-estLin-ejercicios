@@ -39,10 +39,10 @@ jobs:
     - name: Leer nombre y correo del estudiante desde App.java
       id: estudiante
       run: |
-        nombre=$(grep ESTUDIANTE_NOMBRE src/main/App.java | cut -d '"' -f2)
-        correo=$(grep ESTUDIANTE_CORREO src/main/App.java | cut -d '"' -f2)
-        echo "nombre=$nombre" >> $GITHUB_OUTPUT
-        echo "correo=$correo" >> $GITHUB_OUTPUT
+            nombre=$(grep '^STUDENT_NAME=' student.env | cut -d '=' -f2 | xargs)
+            correo=$(grep '^STUDENT_EMAIL=' student.env | cut -d '=' -f2 | xargs)
+            echo "nombre=$nombre" >> $GITHUB_OUTPUT
+            echo "correo=$correo" >> $GITHUB_OUTPUT
     
     - name: Calcular nota y guardar en archivo
       run: |
@@ -53,14 +53,21 @@ jobs:
         TOTAL=$((PASADAS + FALLADAS))
         if [ "$TOTAL" -eq 0 ]; then TOTAL=4; fi
         NOTA=$(echo "$PASADAS * 2.5" | bc)
-        echo "👤 Estudiante: ${{ steps.estudiante.outputs.nombre }}" > nota.txt
-        echo "✉️  Correo: ${{ steps.estudiante.outputs.correo }}" >> nota.txt
-        echo "✅ $PASADAS de $TOTAL pruebas pasadas" >> nota.txt
-        echo "📊 Nota final: $NOTA / 10" >> nota.txt
-        cat nota.txt
+
+        USUARIO=$(echo "$correo" | cut -d '@' -f1 | tr '[:lower:]' )
+        REPO=$(basename "$GITHUB_REPOSITORY")
+        ARCHIVO="$USUARIO-$REPO.txt"
+
+        echo "👤 Estudiante: ${{ steps.estudiante.outputs.nombre }}" > "$ARCHIVO"
+        echo "✉️  Correo: ${{ steps.estudiante.outputs.correo }}" >> "$ARCHIVO"
+        echo "✅ $PASADAS de $TOTAL pruebas pasadas" >> "$ARCHIVO"
+        echo "📊 Nota final: $NOTA / 10" >> "$ARCHIVO"
+        
+        echo "ARCHIVO=$ARCHIVO" >> $GITHUB_ENV
+
 
     - name: Subir archivo de resultado como artefacto
       uses: actions/upload-artifact@v4
       with:
         name: nota
-        path: nota.txt
+        path: $ARCHIVO
