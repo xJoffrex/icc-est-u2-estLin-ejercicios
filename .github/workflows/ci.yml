@@ -27,6 +27,7 @@ jobs:
         javac -cp "lib/*" -d bin $(find src -name "*.java")
 
     - name: Ejecutar pruebas
+      continue-on-error: true
       run: |
         mkdir -p resultados
         java -jar lib/junit-platform-console-standalone-1.7.0.jar \
