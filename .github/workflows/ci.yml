@@ -71,4 +71,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nota
-        path: $ARCHIVO
+        path: ${{ env.ARCHIVO }}
