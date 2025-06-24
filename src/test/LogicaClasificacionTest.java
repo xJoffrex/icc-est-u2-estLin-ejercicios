@@ -26,10 +26,7 @@ public class LogicaClasificacionTest {
     void testValidarSimbolosBalanceados() {
         assertTrue(logica.validarSimbolos("{[()]}"));
         assertTrue(logica.validarSimbolos("((()))"));
-    }
 
-    @Test
-    void testValidarSimbolosDesbalanceados() {
         assertFalse(logica.validarSimbolos("{[(])}"));
         assertFalse(logica.validarSimbolos("((()"));
     }
