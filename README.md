@@ -1,3 +1,17 @@
+# Estructuras de Datos Lineales
+
+## Getting Started
+
+Este proyecto es un ejercicio práctico sobre cómo implementar estructuras de datos lineales básicas en Java. 
+
+Este repositorio se refiere a la segunda unidad de Estructuras de Datos, donde el primer capítulo cubre estructuras de datos lineales: Pilas, Colas y Listas Enlazadas.
+
+## Requisitos
+- Java JDK 11 o superior
+- Git 2.20 o superior
+
+
+
 
 ## Explicación para el estudiante
 
@@ -72,3 +86,12 @@ Crea dos listas: una para pares y otra para impares.
 Consejo general:
 Antes de programar, piensa en cómo usar las estructuras de datos adecuadas (pila, lista, etc.) para cada problema. Si tienes dudas, prueba con ejemplos pequeños en papel
 
+
+
+## Contribuir
+
+Para contribuir a este proyecto, por favor crea un fork y envía una solicitud de extracción, o simplemente abre un issue con tus comentarios y sugerencias.
+
+## Autores
+
+- [PABLO TORRES] - Desarrollo inicial
