@@ -13,7 +13,16 @@ public class LogicaClasificacion {
      *         Salida: "odnuM aloH"
      */
     public String invertirCadena(String texto) {
-        return "";
+        Stack<Character> pila = new Stack<>();
+        for (char c : texto.toCharArray()) {
+            pila.push(c);
+        }
+
+        StringBuilder invertida = new StringBuilder();
+        while (!pila.isEmpty()) {
+            invertida.append(pila.pop());
+        }
+        return invertida.toString();
     }
 
     /**
@@ -28,7 +37,21 @@ public class LogicaClasificacion {
      *         Salida: true
      */
     public boolean validarSimbolos(String expresion) {
-        return false;
+        Stack<Character> pila = new Stack<>();
+        for (char c : expresion.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                pila.push(c);
+            } else if (c == ')' && !pila.isEmpty() && pila.peek() == '(') {
+                pila.pop();
+            } else if (c == '}' && !pila.isEmpty() && pila.peek() == '{') {
+                pila.pop();
+            } else if (c == ']' && !pila.isEmpty() && pila.peek() == '[') {
+                pila.pop();
+            } else if (c == ')' || c == '}' || c == ']') {
+                return false;
+            }
+        }
+        return pila.isEmpty();
     }
 
     /**
@@ -42,7 +65,21 @@ public class LogicaClasificacion {
      */
     public List<Integer> ordenarPila(Stack<Integer> pila) {
 
-        return new ArrayList<>();
+        Stack<Integer> pilaAux = new Stack<>();
+        while (!pila.isEmpty()) {
+            int temp = pila.pop();
+            while (!pilaAux.isEmpty() && pilaAux.peek() > temp) {
+                pila.push(pilaAux.pop());
+            }
+            pilaAux.push(temp);
+        }
+
+        List<Integer> resultado = new ArrayList<>();
+        while (!pilaAux.isEmpty()) {
+            resultado.add(pilaAux.pop());
+        }
+        Collections.reverse(resultado);
+        return resultado;
     }
 
     /**
@@ -57,6 +94,18 @@ public class LogicaClasificacion {
      */
     public List<Integer> clasificarPorParidad(LinkedList<Integer> original) {
 
-        return new ArrayList<>();
+        LinkedList<Integer> pares = new LinkedList<>();
+        LinkedList<Integer> impares = new LinkedList<>();
+
+        for (int num : original) {
+            if (num % 2 == 0) {
+                pares.add(num);
+            } else {
+                impares.add(num);
+            }
+        }
+
+        pares.addAll(impares);
+        return pares;
     }
 }
