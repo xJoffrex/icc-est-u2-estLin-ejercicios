@@ -47,8 +47,11 @@ jobs:
     
     - name: Calcular nota y guardar en archivo
       run: |
-        PASADAS=$(grep -oP '└─ .* ✔' resultados/salida.txt | wc -l)
-        FALLADAS=$(grep -oP '└─ .* ✘' resultados/salida.txt | wc -l)
+        PASADAS=$(grep "tests successful" resultados/salida.txt | grep -oP '\[\s*\K\d+')
+        FALLADAS=$(grep "tests failed" resultados/salida.txt | grep -oP '\[\s*\K\d+')
+
+
+
 
         if [ -z "$PASADAS" ]; then PASADAS=0; fi
         if [ -z "$FALLADAS" ]; then FALLADAS=0; fi
