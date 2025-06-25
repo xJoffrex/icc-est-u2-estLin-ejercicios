@@ -15,7 +15,15 @@ public class LogicaClasificacion {
      *         Salida: "odnuM aloH"
      */
     public String invertirCadena(String texto) {
-        return "";
+        Stack<Character> pila = new Stack<>();
+        for (char c : texto.toCharArray()){
+            pila.push(c);
+        }
+        StringBuilder invertido = new StringBuilder();
+        while (!pila.isEmpty()){
+            invertido.append(pila.pop());
+        }
+        return invertido.toString();
     }
 
     /**
@@ -29,8 +37,29 @@ public class LogicaClasificacion {
      *         Entrada: "{[()]}"
      *         Salida: true
      */
+
     public boolean validarSimbolos(String expresion) {
-        return false;
+        Stack<Character> pilaA = new Stack<>();
+
+        for (char c : expresion.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                pilaA.push(c);
+            } else if (c == ')') {
+                if (pilaA.isEmpty() || pilaA.pop() != '(') {
+                    return false;
+                }
+            } else if (c == '}') {
+                if (pilaA.isEmpty() || pilaA.pop() != '{') {
+                    return false;
+                }
+            } else if (c == ']') {
+                if (pilaA.isEmpty() || pilaA.pop() != '[') {
+                    return false;
+                }
+            }
+        }
+
+        return pilaA.isEmpty();
     }
 
     /**
@@ -43,8 +72,15 @@ public class LogicaClasificacion {
      *         Salida: [1, 2, 3, 4]
      */
     public List<Integer> ordenarPila(Stack<Integer> pila) {
-
-        return new ArrayList<>();
+        Stack<Integer> auxilia = new Stack<>();
+        while (!pila.isEmpty()) {
+            int temp = pila.pop();
+            while (!auxilia.isEmpty() && auxilia.peek() > temp) {
+                pila.push(auxilia.pop());
+            }
+                auxilia.push(temp);
+        }
+        return auxilia;
     }
 
     /**
@@ -58,7 +94,23 @@ public class LogicaClasificacion {
      *         Salida: [2, 4, 6, 1, 3, 5]
      */
     public List<Integer> clasificarPorParidad(LinkedList<Integer> original) {
+        LinkedList<Integer> nuevop = new LinkedList<>();
+        LinkedList<Integer> nuevoi = new LinkedList<>();
+        LinkedList<Integer> combinada = new LinkedList<>();
+        for (int i = 0 ; i < original.size() ; i++){
+           if (original.get(i) % 2 == 0){
+                nuevop.add(original.get(i));  
+           }else{
+                nuevoi.add(original.get(i));
+           }
 
-        return new ArrayList<>();
+
+           
+                
+        }
+        combinada.addAll(nuevop);
+        combinada.addAll(nuevoi);
+           
+        return combinada;
     }
 }
